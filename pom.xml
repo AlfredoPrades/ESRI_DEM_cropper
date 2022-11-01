@@ -3,8 +3,7 @@
 	<groupId>ESRI_DEM_CROPPER</groupId>
 	<artifactId>ESRI_DEM_CROPPER</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<build>
-		<sourceDirectory>src</sourceDirectory>
+		<build>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -14,6 +13,25 @@
 					<target>1.8</target>
 				</configuration>
 			</plugin>
+			
+			    <plugin> 
+
+                <!-- Building an executable jar -->
+
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                  <archive>
+                    <manifest>
+
+                    <!-- give full qualified name of your main class-->
+                      <mainClass>net.terrik.demCropper.Cropper</mainClass>
+
+                    </manifest>
+                  </archive>
+                </configuration>
+    </plugin>
 		</plugins>
 	</build>
 	<dependencies>
@@ -30,7 +48,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.13.2</version>
+			<version>4.11</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
