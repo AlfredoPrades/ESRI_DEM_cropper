@@ -1,4 +1,4 @@
-package es.terrik.demCroppder;
+package net.terrik.demCropper;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -23,34 +23,29 @@ public class DemCropper {
 	private EsriHeader header;
 	private FileWriter fw;
 
-	public DemCropper(int minx, int maxx, int miny, int maxy, File inputFile, File outputFiles) {
+	public DemCropper(int minx, int maxx, int miny, int maxy, File inputFile, File outputFile) {
 		super();
 		this.minx = minx;
 		this.maxx = maxx;
 		this.miny = miny;
 		this.maxy = maxy;
 		this.inputFile = inputFile;
-		this.outputFile = outputFiles;
+		this.outputFile = outputFile;
 	}
 	
 	public void process() {
 		
-		
-		
 		try {
 			header = EsriHeader.builHeader(inputFile);
-			
 			validateParameters();
-			
 
 			try {
 				fw = new FileWriter(outputFile);
-				
 				writeNewHeader();
 				writeCroppedValues();
-				
 
-
+			} catch (FileNotFoundException e) {
+				throw new InvalidParameterException(e.getMessage());
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
@@ -63,11 +58,9 @@ public class DemCropper {
 			System.out.println("END");
 
 		} catch (FileNotFoundException e) {
-			System.out.println("File not found!");
-			e.printStackTrace();
-		}
-		
-		
+			System.err.println("Input file not found!");
+			throw new InvalidParameterException(e.getMessage());
+		} 
 		
 		
 	}
@@ -75,7 +68,6 @@ public class DemCropper {
 	private void writeCroppedValues() throws IOException {
 		Scanner fileScaner = new Scanner(inputFile);
 		long currentLineNumber = 0;
-
 		
 		String currentLine;
 		int yPosition = 0 ;
@@ -83,11 +75,12 @@ public class DemCropper {
 			System.out.println("Row : " + yPosition++ );
 			currentLine = fileScaner.nextLine();
 			
+			long dataLineNumber = currentLineNumber - NUM_HEADLINES;
 			// Skip Header
-			if (++currentLineNumber <= NUM_HEADLINES || currentLineNumber - NUM_HEADLINES  < miny ) {
+			if (++currentLineNumber <= NUM_HEADLINES || dataLineNumber  < miny ) {
 				continue;
 			}
-			if ( currentLineNumber - NUM_HEADLINES > maxy) {
+			if ( dataLineNumber > maxy) {
 				break;
 			}
 
@@ -133,11 +126,11 @@ public class DemCropper {
 	private void validateParameters() {
 		String msg ="";
 		if (minx < 1 ) {
-			msg = "-> minx < que 1.\n\n";
+			msg = "-> minx < than 1.\n\n";
 		}
 		
 		if ( minx >=  maxx ) {
-			msg ="-> minx > que maxx.\n\n";
+			msg ="-> minx > than maxx.\n\n";
 		}
 		
 		if  (minx >= header.getnCols()) {
@@ -149,11 +142,11 @@ public class DemCropper {
 		}
 
 		if (miny < 1 ) {
-			msg = "-> miny < que 1.\n\n";
+			msg = "-> miny < than 1.\n\n";
 		}
 		
 		if ( miny >=  maxy ) {
-			msg ="-> miny > que maxy.\n\n";
+			msg ="-> miny > than maxy.\n\n";
 		}
 		
 		if  (miny >= header.getnCols()) {

@@ -1,12 +1,13 @@
-package es.terrik.demCroppder;
+package net.terrik.demCropper;
 
 import java.io.File;
+import java.io.IOException;
 
 
 
 public class Cropper {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 
 		if (args.length != 5 ) {
 			printHelp();
@@ -30,7 +31,7 @@ public class Cropper {
 	}
 
 	private static void printHelp() {
-		System.out.println("Parametros: dem_file xmin xmax ymin ymax");
+		System.out.println("Parameters: dem_file xmin xmax ymin ymax");
 	}
 	
 	

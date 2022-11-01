@@ -1,4 +1,4 @@
-package es.terrik.demCroppder;
+package net.terrik.demCropper;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -25,7 +25,7 @@ public class EsriHeader {
 			nCols = value; 
 			break;
 		case 2: 
-			nRows = value;
+			nRows = value; 
 			break;
 		case 3: 
 			xCenter = value;
